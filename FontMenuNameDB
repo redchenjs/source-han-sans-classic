@@ -1,0 +1,65 @@
+[SourceHanSansC-ExtraLight]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,ExtraLight
+	l=3,1,0x404,思源黑體 傳統 ExtraLight
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,ExtraLight
+	l=3,1,0x804,思源黑体 传统 ExtraLight
+	f=Source Han Sans C
+	s=ExtraLight
+	l=Source Han Sans C ExtraLight
+
+[SourceHanSansC-Light]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Light
+	l=3,1,0x404,思源黑體 傳統 Light
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Light
+	l=3,1,0x804,思源黑体 传统 Light
+	f=Source Han Sans C
+	s=Light
+	l=Source Han Sans C Light
+
+[SourceHanSansC-Normal]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Normal
+	l=3,1,0x404,思源黑體 傳統 Normal
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Normal
+	l=3,1,0x804,思源黑体 传统 Normal
+	f=Source Han Sans C
+	s=Normal
+	l=Source Han Sans C Normal
+
+[SourceHanSansC-Regular]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Regular
+	l=3,1,0x404,思源黑體 傳統
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Regular
+	l=3,1,0x804,思源黑体 传统
+	f=Source Han Sans C
+	s=Regular
+	l=Source Han Sans C
+
+[SourceHanSansC-Medium]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Medium
+	l=3,1,0x404,思源黑體 傳統 Medium
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Medium
+	l=3,1,0x804,思源黑体 传统 Medium
+	f=Source Han Sans C
+	s=Medium
+	l=Source Han Sans C Medium
+
+[SourceHanSansC-Bold]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Bold
+	l=3,1,0x404,思源黑體 傳統
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Bold
+	l=3,1,0x804,思源黑体 传统
+	f=Source Han Sans C
+	s=Bold
+	l=Source Han Sans C
