@@ -63,3 +63,14 @@
 	f=Source Han Sans C
 	s=Bold
 	l=Source Han Sans C
+
+[SourceHanSansC-Heavy]
+	f=3,1,0x404,思源黑體 傳統
+	s=3,1,0x404,Heavy
+	l=3,1,0x404,思源黑體 傳統 Heavy
+	f=3,1,0x804,思源黑体 传统
+	s=3,1,0x804,Heavy
+	l=3,1,0x804,思源黑体 传统 Heavy
+	f=Source Han Sans C
+	s=Heavy
+	l=Source Han Sans C Heavy
