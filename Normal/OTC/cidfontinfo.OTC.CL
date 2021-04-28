@@ -2,7 +2,7 @@ FontName                   (SourceHanSansC-Normal)
 FullName                   (Source Han Sans Classic Normal)
 FamilyName                 (Source Han Sans Classic)
 Weight                     (Normal)
-version                    (2.003)
+version                    (2.004)
 Registry                   (Adobe)
 Ordering                   (Identity)
 Supplement                 0

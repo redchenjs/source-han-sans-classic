@@ -2,7 +2,7 @@ FontName                   (SourceHanSansC-Bold)
 FullName                   (Source Han Sans Classic Bold)
 FamilyName                 (Source Han Sans Classic)
 Weight                     (Bold)
-version                    (2.003)
+version                    (2.004)
 Registry                   (Adobe)
 Ordering                   (Identity)
 Supplement                 0
