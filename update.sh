@@ -1,11 +1,16 @@
 #!/bin/sh
 
+search_and_delete() {
+  sed -i ":begin; /$1/,/$2/ { /$2/! { \$! { N; b begin }; }; /$1.*$2/d; };" $3
+}
+
 for dir in ExtraLight Light Normal Regular Medium Bold Heavy; do
   mkdir -p "$dir/OTC"
   sed "s|SansK|SansC|" "source-han-sans/$dir/OTC/features.OTC.K" > "$dir/OTC/features.OTC.CL"
   sed "s|SansK|SansC|" "source-han-sans/$dir/OTC/cidfont.ps.OTC.K" > "$dir/OTC/cidfont.ps.OTC.CL"
   sed "s|SansK|SansC|
        s|Korean|Classic|" "source-han-sans/$dir/OTC/cidfontinfo.OTC.K" > "$dir/OTC/cidfontinfo.OTC.CL"
+  search_and_delete 'feature locl' 'locl;\n' "$dir/OTC/features.OTC.CL"
 done
 
 sed "s|SansKR|SansCL|" "source-han-sans/UniSourceHanSansKR-UTF32-H" > UniSourceHanSansCL-UTF32-H
