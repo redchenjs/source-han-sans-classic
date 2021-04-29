@@ -10,7 +10,7 @@ for dir in ExtraLight Light Normal Regular Medium Bold Heavy; do
   sed "s|SansK|SansC|" "source-han-sans/$dir/OTC/cidfont.ps.OTC.K" > "$dir/OTC/cidfont.ps.OTC.CL"
   sed "s|SansK|SansC|
        s|Korean|Classic|" "source-han-sans/$dir/OTC/cidfontinfo.OTC.K" > "$dir/OTC/cidfontinfo.OTC.CL"
-  sed -i "/lookup kr2.*;$/d" "$dir/OTC/features.OTC.CL"
+  sed -i "/lookup kr2.*;/d" "$dir/OTC/features.OTC.CL"
   search_and_delete 'lookup kr2jp' 'kr2jp;\n' "$dir/OTC/features.OTC.CL"
   search_and_delete 'lookup kr2cn' 'kr2cn;\n' "$dir/OTC/features.OTC.CL"
   search_and_delete 'lookup kr2tw' 'kr2tw;\n' "$dir/OTC/features.OTC.CL"
