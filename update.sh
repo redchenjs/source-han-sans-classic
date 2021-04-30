@@ -1,25 +1,70 @@
-#!/bin/sh
+#!/bin/bash
 
-search_and_delete() {
+variant=Sans
+license=LICENSE.txt
+srcpath='source-han-sans'
+lookups='kr2jp kr2cn kr2tw kr2hk'
+subdirs='ExtraLight Light Normal Regular Medium Bold Heavy'
+
+remove_unused_tables() {
   sed -i ":begin; /$1/,/$2/ { /$2/! { \$! { N; b begin }; }; /$1.*$2/d; };" $3
 }
 
-for dir in ExtraLight Light Normal Regular Medium Bold Heavy; do
+search_unused_glyphs() {
+  st=`grep -A 1 -n "$1" "$3" | sed -n '2,2p' | sed -r 's|([0-9]+).*|\1|'`
+  sp=`grep -B 1 -n "$2" "$3" | sed -n '1,1p' | sed -r 's|([0-9]+).*|\1|'`
+
+  sed -n "${st},${sp}p" $3 >> unused_tables.txt
+}
+
+for dir in $subdirs; do
   mkdir -p "$dir/OTC"
-  sed "s|SansK|SansC|
-       s|Korean|Classic|" "source-han-sans/$dir/OTC/features.OTC.K" > "$dir/OTC/features.OTC.CL"
-  sed "s|SansK|SansC|
-       s|Korean|Classic|" "source-han-sans/$dir/OTC/cidfont.ps.OTC.K" > "$dir/OTC/cidfont.ps.OTC.CL"
-  sed "s|SansK|SansC|
-       s|Korean|Classic|" "source-han-sans/$dir/OTC/cidfontinfo.OTC.K" > "$dir/OTC/cidfontinfo.OTC.CL"
+
+  sed "s|${variant}K|${variant}C|
+       s|Korean|Classic|" "$srcpath/$dir/OTC/features.OTC.K" > "$dir/OTC/features.OTC.CL"
+  sed "s|${variant}K|${variant}C|
+       s|Korean|Classic|" "$srcpath/$dir/OTC/cidfont.ps.OTC.K" > "$dir/OTC/cidfont.ps.OTC.CL"
+  sed "s|${variant}K|${variant}C|
+       s|Korean|Classic|" "$srcpath/$dir/OTC/cidfontinfo.OTC.K" > "$dir/OTC/cidfontinfo.OTC.CL"
   sed -i "/lookup kr2.*;/d" "$dir/OTC/features.OTC.CL"
-  search_and_delete 'lookup kr2jp' 'kr2jp;\n' "$dir/OTC/features.OTC.CL"
-  search_and_delete 'lookup kr2cn' 'kr2cn;\n' "$dir/OTC/features.OTC.CL"
-  search_and_delete 'lookup kr2tw' 'kr2tw;\n' "$dir/OTC/features.OTC.CL"
-  search_and_delete 'lookup kr2hk' 'kr2hk;\n' "$dir/OTC/features.OTC.CL"
+
+  for lookup in $lookups; do
+    remove_unused_tables "lookup $lookup " "$lookup;\n" "$dir/OTC/features.OTC.CL"
+  done
 done
 
-sed "s|SansKR|SansCL|" "source-han-sans/UniSourceHanSansKR-UTF32-H" > UniSourceHanSansCL-UTF32-H
+:> unused_tables.txt
+:> unused_glyphs.txt
 
-cp source-han-sans/SourceHanSans_KR_sequences.txt SourceHanSans_CL_sequences.txt
-cp source-han-sans/LICENSE.txt LICENSE.txt
+for lookup in $lookups; do
+  search_unused_glyphs "lookup $lookup " "} $lookup;" "$srcpath/Regular/OTC/features.OTC.K"
+done
+
+sort unused_tables.txt | uniq > unused_tables_sorted.txt
+for line in $(echo -e $(cat unused_tables_sorted.txt)); do
+  str=$(echo "$line" | grep -E '[\][0-9]+;' | sed -r 's|[\]([0-9]+);|\1|')
+
+  if [ -n "$str" ]; then
+    ret0=$(cat "Regular/OTC/features.OTC.CL" | grep "[\]$str[; ]")
+    ret1=$(cat "UniSourceHan${variant}CL-UTF32-H" "SourceHan${variant}_CL_sequences.txt" | grep "$str$")
+
+    if [ -z "$ret0" -a -z "$ret1" ]; then
+      echo "$str" >> unused_glyphs.txt
+    fi
+  fi
+done
+
+sort unused_glyphs.txt | uniq > unused_glyphs_sorted.txt
+for line in $(echo -e $(cat unused_glyphs_sorted.txt)); do
+  arg="$arg,/$line"
+done
+
+for dir in $subdirs; do
+  mergefonts -gx $arg "$dir/output.ps" "$dir/OTC/cidfont.ps.OTC.CL"
+  mv "$dir/output.ps" "$dir/OTC/cidfont.ps.OTC.CL"
+done
+
+sed "s|${variant}KR|${variant}CL|" "$srcpath/UniSourceHan${variant}KR-UTF32-H" > "UniSourceHan${variant}CL-UTF32-H"
+
+cp "$srcpath/SourceHan${variant}_KR_sequences.txt" "SourceHan${variant}_CL_sequences.txt"
+cp "$srcpath/$license" LICENSE.txt
