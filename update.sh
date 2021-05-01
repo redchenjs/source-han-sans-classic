@@ -3,10 +3,10 @@
 variant=Sans
 license=LICENSE.txt
 srcpath='source-han-sans'
-lookups='kr2jp kr2cn kr2tw kr2hk'
 subdirs='ExtraLight Light Normal Regular Medium Bold Heavy'
+removed='latin_special jpcntwhk_special kr_special kr2jp kr2cn kr2tw kr2hk locl'
 
-remove_unused_tables() {
+remove_unused_blocks() {
   sed -i ":begin; /$1/,/$2/ { /$2/! { \$! { N; b begin }; }; /$1.*$2/d; };" $3
 }
 
@@ -26,18 +26,17 @@ for dir in $subdirs; do
        s|Korean|Classic|" "$srcpath/$dir/OTC/cidfont.ps.OTC.K" > "$dir/OTC/cidfont.ps.OTC.CL"
   sed "s|${variant}K|${variant}C|
        s|Korean|Classic|" "$srcpath/$dir/OTC/cidfontinfo.OTC.K" > "$dir/OTC/cidfontinfo.OTC.CL"
-  sed -i "/lookup kr2.*;/d" "$dir/OTC/features.OTC.CL"
 
-  for lookup in $lookups; do
-    remove_unused_tables "lookup $lookup " "$lookup;\n" "$dir/OTC/features.OTC.CL"
+  for block in $removed; do
+    remove_unused_blocks "[a-z] $block " "} $block;\n" "$dir/OTC/features.OTC.CL"
   done
 done
 
 :> unused_tables.txt
 :> unused_glyphs.txt
 
-for lookup in $lookups; do
-  search_unused_glyphs "lookup $lookup " "} $lookup;" "$srcpath/Regular/OTC/features.OTC.K"
+for block in $removed; do
+  search_unused_glyphs "[a-z] $block " "} $block;" "$srcpath/Regular/OTC/features.OTC.K"
 done
 
 sort unused_tables.txt | uniq > unused_tables_sorted.txt
