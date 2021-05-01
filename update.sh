@@ -14,7 +14,7 @@ search_unused_glyphs() {
   st=`grep -A 1 -n "$1" "$3" | sed -n '2,2p' | sed -r 's|([0-9]+).*|\1|'`
   sp=`grep -B 1 -n "$2" "$3" | sed -n '1,1p' | sed -r 's|([0-9]+).*|\1|'`
 
-  sed -n "${st},${sp}p" $3 >> unused_tables.txt
+  sed -n "${st},${sp}p" $3 >> unused_blocks.txt
 }
 
 for dir in $subdirs; do
@@ -32,15 +32,15 @@ for dir in $subdirs; do
   done
 done
 
-:> unused_tables.txt
+:> unused_blocks.txt
 :> unused_glyphs.txt
 
 for block in $removed; do
   search_unused_glyphs "[a-z] $block " "} $block;" "$srcpath/Regular/OTC/features.OTC.K"
 done
 
-sort unused_tables.txt | uniq > unused_tables_sorted.txt
-for line in $(echo -e $(cat unused_tables_sorted.txt)); do
+sort unused_blocks.txt | uniq > unused_blocks_sorted.txt
+for line in $(echo -e $(cat unused_blocks_sorted.txt)); do
   str=$(echo "$line" | grep -E '[\][0-9]+;' | sed -r 's|[\]([0-9]+);|\1|')
 
   if [ -n "$str" ]; then
